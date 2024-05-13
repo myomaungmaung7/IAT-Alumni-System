@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras/springsecurity5">
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Alumni</title>
+    	
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    	
+    	<style>
+			#search {
+				margin: 0 auto;
+			}
+			
+			.user {
+				 font-size: 2em;
+				 color: #DAA520;
+			 }
+			 
+			 .plus {
+				 font-size: 1.7em;
+			 }
+			 
+			 #logout {
+				 width: 90px;
+				 height: 35px;
+			 }
+			 
+			 #content {
+				 width: 600px;
+			 }
+			 
+			 .draggable {
+				 border-radius: 50%;
+			 }
+			 
+			 #artDate {
+				 margin-left: 250px;
+			 }
+			 
+			 #artDes {
+				 margin-left: 58px;
+			 }
+			 
+			 .post {
+				 width: 500px;
+				 height: 40px;
+			 }
+			 
+			 .comment {
+				 border-top-right-radius: 0;
+				 border-top-left-radius: 0;
+			 }
+			 
+			 .name {
+				 color: #F171AB;
+			 }
+			 
+			 .hisLink:hover {
+				 color: #F171AB;
+			 }
+		</style>
+	</head>
+	<body>
+		<header class="border border-body-secondary p-2 shadow mb-3">
+			<nav class="navbar sticky-top navbar-expand-lg">
+				<img src="/images/IATLogo.png" alt="IATLogo" width="100px" height="50px" class="ms-5">
+				
+				<ul class="navbar-nav me-5">
+					<li class="nav-item ms-5">
+						<a href="/articleHistory" class="hisLink nav-link">Articles History</a>
+					</li>
+					<li class="nav-item ms-5">
+						<a href="alumni/event/postedEvents" class="hisLink nav-link">Events History</a>
+					</li>
+				</ul>
+				<form class="d-flex me-5" role="search" id="search" th:action="@{/search}">
+      				 <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" 
+      				 name="keyword" id="searchBar">
+         			 <button class="btn bg-body-secondary border border-secondary ms-2 me-5" type="submit" value="Search">Search</button>
+    			</form>
+    			
+    			<div class="name text-center ms-5 me-3">
+					Welcome<p th:text="${userSession.user.userName}" class="text-center"></p>
+				</div>
+   				<a th:href="@{/user/profile/{id}(id=${userSession.user.userId})}">
+    			<img th:src="@{${userSession.user.photosImagePath}}" alt="Profile Photo" width="45px" height="45px"
+    				class="draggable border border-secondary  me-2 ms-3">
+    			</a>
+    			
+    			<form class="ms-3">
+					<button type="submit" class="ms-3 me-5 bg-body-secondary border border-secondary rounded-3"
+					id="logout">
+						<a th:href="@{/logout}" class="text-decoration-none text-body-secondary">
+							Logout <i class="bi bi-box-arrow-right"></i>
+						</a>
+					</button>
+				</form>
+			</nav>
+		</header>
+		<div class="float-start">
+			<p class="text-center ms-4">
+				<i class="user bi bi-people-fill"></i>  
+				<span th:text="${userCount}" class="fs-3"></span><i class="plus bi bi-plus"></i>
+				<br>
+				<span class="text-secondary">Number of Users</span>
+    		</p>
+    		<p class="text-center ms-3">
+				<i class="user bi bi-calendar2-event"></i>
+				<span th:text="${eventCount}" class="fs-3"></span><i class="plus bi bi-plus"></i>
+				<br>
+				<span class="text-secondary">Number of Events</span>
+			</p>
+			<p class="text-center ms-3">
+				<i class="user bi bi-postcard-fill"></i>
+				<span th:text="${articleCount}" class="fs-3"></span><i class="plus bi bi-plus"></i>
+				<br>
+				<span class="text-secondary">Number of Articles</span>
+			</p>
+		</div>
+		<div class="container">
+			<div class="d-flex justify-content-center align-items-center">
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="d-flex mb-2">
+									<span>
+										<img th:src="@{${userSession.user.photosImagePath}}" width="45px" height="45px" 
+										class="draggable border border-secondary">
+									</span>
+									<span>
+										<div>
+											<button type="submit" class="post form-control ms-3">
+												<a href="/alumni/article/posting" class="text-decoration-none text-body-secondary">
+													Start a post
+												</a> 	
+											</button>
+										</div>
+									</span>
+								</div>
+								<div class="d-flex ms-5 mb-5">
+									<div class="me-5 ms-5">
+										<a href="/alumni/event/create" class="me-5 ms-5 text-decoration-none text-body-secondary">
+											<i class="bi bi-calendar4-event"></i> Event
+										</a>
+									</div>
+									<form class="ms-5">
+										<a href="/alumni/article/posting" class="ms-5 text-decoration-none text-body-secondary">
+											<i class="bi bi-postcard"></i> Write Article
+										</a>
+									</form>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div>
+									<div  th:each="article : ${listArticle}" 
+									class="border border-body-secondary shadow mb-5 rounded-3" id="content">
+										<div class="mt-2 ms-2">
+											<span>
+												<img th:src="@{${article.user.photosImagePath}}" width="40px" height="40px" 
+												class="draggable border border-secondary">
+											</span>
+											<span th:text="${article.user.userName}" class="ms-2"></span>
+											<span  th:text="${article.date}" id="artDate"></span>
+										</div>
+										<div id="artDes">
+											<p>
+												<span th:text="${article.title}"></span>
+											</p>
+										</div>
+										<div id="artDes">
+											<p>
+												<span th:if="${#strings.length(article.description) >= 200}" th:utext="${#strings.substring(article.description, 0, 200)} + '.....'"></span>
+												<span><a></a></span>
+											</p>
+										</div>
+										<div>
+											<a  th:href="@{/alumni/articleDetail/{articleId}(articleId=${article.articleId})}"
+											class="comment text-decoration-none text-body-secondary form-control text-center">
+												Comment	
+											</a>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div>
+									<div th:each="event : ${listEvent}" 
+									class="border border-body-secondary shadow mb-5 rounded-3" id="content">
+										<div class="mt-2 ms-2">
+											<span>
+												<img th:src="@{${event.user.photosImagePath}}" width="40px" height="40px" 
+												class="draggable border border-secondary">
+											</span>
+											<span th:text="${event.user.userName}" class="ms-2"></span>
+											<span th:text="${event.date}" id="artDate"></span>
+										</div>
+										<div id="artDes">
+											<p>
+												<span th:text="${event.title}"></span>
+											</p>
+										</div>
+										<div id="artDes">
+											<p>
+												<span th:text="${event.description}"></span>
+												<span><a></a></span>
+											</p>
+										</div>
+										<div id="artDes">
+											<p>
+												<p><strong>Date:</strong> <span th:text="${#temporals.format(event.dateTime, 'MMM dd, yyyy')}"></span></p>
+												<p><strong>Time:</strong> <span th:text="${#temporals.format(event.dateTime, 'hh:mm a')}"></span></p>
+											</p>
+										</div>
+										<div >
+											<a  th:href="@{/alumni/event/eventDetail/{eventId}(eventId=${event.eventId})}"
+											class="comment text-decoration-none text-body-secondary form-control text-center">
+												Join <i class="bi bi-person-add"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

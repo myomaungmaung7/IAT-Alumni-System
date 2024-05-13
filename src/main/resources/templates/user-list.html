@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+     <link rel="stylesheet" 	type="text/css" media="all" href="../../css/style.css"th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+
+        body {
+            background-image: url('/images/Background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+        
+        .table-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .add-user-btn {
+            background-color: #5BC0DE;
+            border-color: #5BC0DE;
+            color: #fff;
+        }
+        
+        .add-user-btn:hover {
+            background-color: #31B0D5;
+            border-color: #31B0D5;
+            color: #fff;
+        }
+        
+        .logo {
+		    width: 150px !important;
+    		height: auto !important;
+		}
+		    
+		.navbar-nav {
+			display: flex;
+			list-style: none;
+			padding: 0;
+		}
+			
+		.nav-item {
+			margin-right: 20px;
+			position: relative;
+		}
+			
+		.nav-link {
+			color: black;
+			text-decoration: none;
+			position: relative;
+		}
+			
+		.nav-link:hover {
+			color: #F171AB;
+		}
+			
+		.nav-link::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -2px;
+			width: 0;
+			height: 2px;
+			background-color: #F171AB;
+			transition: width 0.3s ease;
+		}
+			
+		.nav-item:hover .nav-link::after {
+			width: 100%;
+		}
+    </style>
+</head>
+<body>
+	<header class="border border-body-secondary p-2 shadow mb-3">
+	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		        <div class="container-fluid">
+		            <a class="navbar-brand" href="/homeAlumni">
+		                <img class="logo" src="/images/IATLogo.png" alt="IATLogo">
+		            </a>
+		            
+		            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/user/list">Manage User</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/manageArticle">Manage Articles</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/reviewarticle">Review Posted Articles</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/reviewReport">Review Reported Articles</a>
+		                </li>
+		                
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/event/list">Review Events</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/reviewPassword">Review Forgotten Passwords</a>
+		                </li>
+		            </ul>
+		            
+		            <ul class="navbar-nav">
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/logout">
+		                        <i class="fas fa-sign-out-alt fa-2x text-danger"></i> Logout
+		                    </a>
+		                </li>
+		            </ul>
+		        </div>
+		    </nav>
+	    </header>
+    
+    <div class="container mt-4">
+        <h1 class="my-4">User List</h1>
+        <div class="text-right mb-3">
+            <a href="/admin/user/create" class="btn btn-primary add-user-btn">
+                <i class="fas fa-plus"></i> Add New User
+            </a>
+        </div>
+        <div th:if="${not #lists.isEmpty(userlist)}">
+            <div class="table-container">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Date of Birth</th>
+                            <th>Gender</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user, iterStat : ${userlist}">
+                            <th:block th:if="${iterStat.index != 0}">
+                                <td th:text="${user.userId}"></td>
+                                <td th:text="${user.userName}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.dateOfBirth}"></td>
+                                <td th:text="${user.gender}"></td>
+                                <td>
+									<a th:href="@{/admin/editUser/{Id}(Id=${user.userId})}" class="btn btn-sm btn-primary">Update</a>
+                                    <form th:action="@{/admin/user/delete-user/{userId}(userId=${user.userId})}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger mr-1">Delete</button>
+                                    </form>
+                                </td>
+                            </th:block>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer>
+	    <div class="footer">
+	        <span>Copyright © 2024, Institute of Advanced Technologies | All Rights Reserved.</span>
+	    </div>
+	</footer>
+</body>
+</html>

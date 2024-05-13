@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/css/style.css">
+	   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+</head>
+<body class="editprofile">
+
+	<div class="Rnavbar">
+			<div class="rlogo">
+				<!-- Placeholder for photo -->
+				<img src="/images/IATLogo.png" alt="Logo" height="50px" width="150px">
+			</div>
+			<div class="links">
+				<!-- Text links -->
+				<a href="/admin/user/list">manage Users</a>
+				<a href="/admin/manageArticle">manage Articles</a>
+				<a href="/admin/reviewarticle">Review Posted Article</a>
+	            <a href="/admin/reviewReport">Review Reported Article</a>
+				<a href="/admin/event/list">Review Events</a>
+				<a href="/admin/reviewPassword">Review Forgetten password</a>
+			</div>
+	   </div>
+
+<div class="Ewrapper"> 
+	
+	<form action="#" class="Eform" th:action="@{/admin/updateUser/{Id}(Id=${user.UserId})}" method="post" th:object="${user}">
+ <h1>Update Your Profile</h1><br><br>
+ 
+<!-- <label class="Elabel">User ID:</label>-->
+<!-- <input type="text"  th:field="*{userId}" readonly="true" class="Einput"   /><br/>-->
+ 
+ 
+
+<label class="Elabel">Name:</label>
+<input type="text" th:field="*{userName}" class="Einput"/><br/>
+
+<label class="Elabel">E-mail:</label>
+<input type="text" th:field="*{email}" class="Einput" readonly="true" /><br/>
+
+<label class="Elabel">Date Of Birth:</label>
+<input type="datetime" th:field="*{dateOfBirth}" class="Einput" readonly="true" /><br/>
+
+<!--<label class="Elabel">Enabled:</label>-->
+<!--<input type="text" th:field="*{enabled}" class="Einput"/><br/>-->
+
+<label class="Elabel">Course Name:</label>
+<input type="text" th:field="*{courseName}" class="Einput" /><br/>
+
+<label class="Elabel">Education Background:</label>
+<input type="text" th:field="*{education}" class="Einput"/><br/>
+
+<label class="Elabel">Job Title:</label>
+<input type="text" th:field="*{jobTitle}" class="Einput" /><br/>		
+    
+ 
+
+<label class="Elabel">Biography:</label>
+<textarea name="" id="" cols="41" rows="10" class="Earea" th:field="*{bio}"></textarea> <br/>
+ 
+<label class="Elabel">Gender:</label>
+<input type="radio" name="gender"  th:field="*{gender}" value="Male" />Male
+<input type="radio" name="gender" th:field="*{gender}" value="Female" />Female<br/>
+
+<button type="submit">Update</button>
+
+</form>
+</div>
+
+
+    <div class="footer">
+        <p>copyright &copy; 2024,Institute of Advanced Technologies | All Rights Reserved.</p>
+    </div>
+    
+</body>
+</html>

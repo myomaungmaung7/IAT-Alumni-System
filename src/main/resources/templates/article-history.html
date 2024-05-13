@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Events</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+			.navlink:hover {
+				color: #F171AB;
+			}
+			
+			.navColor {
+				color: #F171AB;
+			}
+			
+			
+			
+			.draggable {
+				 border-radius: 50%;
+			 }
+			 
+			  #artDate {
+				 margin-left: 250px;
+			 }
+			 
+			  #artDes {
+				 margin-left: 58px;
+			 }
+			 
+			 #content {
+				 width: 600px;
+			 }
+			 
+			 #back {
+				 width: 90px;
+				 height: 35px;
+			 }
+	</style>
+</head>
+<body>
+	<header class="border border-body-secondary p-2 shadow mb-3">
+	        <nav class="navbar navbar-expand-lg ">
+		        <div class="container-fluid">
+		            <img class="logo ms-5" src="/images/IATLogo.png" alt="IATLogo" width="100px" height="50px">
+		           
+		            <ul class="navMargin navbar-nav">
+		                <li class="nav-item">
+		                    <a class="navlink nav-link" href="/alumni/article/posting">Post Article</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="navlink nav-link" href="alumni/event/create">Create Event</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="navColor nav-link" href="/articleHistory">Articles History</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="navlink nav-link" href="/alumni/event/postedEvents">Events History</a>
+		                </li>
+		            </ul>
+		                
+		           <form class="d-flex me-5" role="search" id="search" th:action="@{/search}">
+      				 <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" 
+      				 name="keyword" id="searchBar">
+         			 <button class="btn bg-body-secondary border border-secondary ms-2 me-5" type="submit" value="Search">Search</button>
+    			 </form>
+    			 
+		         <a th:href="@{/user/profile/{id}(id=${currentUser.userId})}">
+    			<img th:src="@{${currentUser.photosImagePath}}" alt="Profile Photo" width="45px" height="45px"
+    				class="draggable border border-secondary  me-2 ms-3">
+    			</a>
+		        
+		       <button type="submit" class="ms-3 me-5 bg-body-secondary border border-secondary rounded-3"
+					id="back" onclick="window.history.back()">
+							Back <i class="bi bi-box-arrow-right"></i>
+			  </button>
+		        </div>
+		    </nav>
+	    </header>
+	    
+   		<div class="container">
+			<div class="d-flex justify-content-center align-items-center">
+				 <div>
+					  <table>
+						   <tr>
+							 <td>
+								 <div>
+									 <div th:each="article : ${articles}" 
+									 class="border border-body-secondary shadow mb-5 rounded-3" id="content">
+										 <div class="mt-2 ms-2">
+											 <span>
+												 <img th:src="@{${article.user.photosImagePath}}" width="40px" height="40px" 
+												class="draggable border border-secondary">
+											 </span>
+											 <span th:text="${article.user.userName}" class="ms-2"></span>
+											 <span  th:text="${article.date}" id="artDate"></span>
+										 </div>
+										 <div id="artDes">
+											 <p>
+												<span th:text="${article.title}"></span>
+											</p>
+										 </div>
+										 <div id="artDes">
+											 <p>
+												<span th:text="${article.description}"></span>
+												<span><a></a></span>
+											</p>
+										 </div>
+										 <div>
+											 <a  th:href="@{/articleDetail/{articleId}(articleId=${article.articleId})}"
+											class="comment text-decoration-none text-body-secondary form-control text-center">
+												Comment	
+											</a>
+										 </div>
+									 </div>
+								 </div>
+							 </td>
+						   </tr>
+					   </table>
+				  </div>
+			 </div>
+		 </div>
+</body>
+</html>

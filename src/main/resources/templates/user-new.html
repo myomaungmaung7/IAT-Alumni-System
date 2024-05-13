@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Event</title>
+     <link rel="stylesheet" 	type="text/css" media="all" href="../../css/style.css"th:href="@{/css/style.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        body {
+            background-image: url('/images/Background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+        
+        .border {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .logo {
+		        width: 150px !important;
+    			height: auto !important;
+		    }
+		    
+		    .navbar-nav {
+			    display: flex;
+			    list-style: none;
+			    padding: 0;
+			}
+			
+			.nav-item {
+			    margin-right: 20px;
+			    position: relative;
+			}
+			
+			.nav-link {
+			    color: black;
+			    text-decoration: none;
+			    position: relative;
+			}
+			
+			.nav-link:hover {
+			    color: #F171AB;
+			}
+			
+			.nav-link::after {
+			    content: '';
+			    position: absolute;
+			    left: 0;
+			    bottom: -2px;
+			    width: 0;
+			    height: 2px;
+			    background-color: #F171AB;
+			    transition: width 0.3s ease;
+			}
+			
+			.nav-item:hover .nav-link::after {
+			    width: 100%;
+			}
+    </style>
+</head>
+<body>
+	<header class="border border-body-secondary p-2 shadow mb-3">
+	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		        <div class="container-fluid">
+		            <a class="navbar-brand" href="/homeAlumni">
+		                <img class="logo" src="/images/IATLogo.png" alt="IATLogo">
+		            </a>
+		            
+		            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/user/list">Manage User</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/manageArticles">Manage Articles</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/reviewarticle">Review Posted Articles</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/reviewReport">Review Reported Articles</a>
+		                </li>
+		                
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/event/list">Review Events</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/admin/reviewPassword">Review Forgotten Passwords</a>
+		                </li>
+		            </ul>
+		            
+		            <ul class="navbar-nav">
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/logout">
+		                        <i class="fas fa-sign-out-alt fa-2x text-danger"></i> Logout
+		                    </a>
+		                </li>
+		            </ul>
+		        </div>
+		    </nav>
+	    </header>
+	
+	<div class="container">
+	    <div class="row justify-content-center align-items-center p-5">
+	        <div class="col-md-6">
+	            <div class="border border-secondary rounded p-5">
+	                <h1 class="mb-4">Add New User</h1>
+	                <form id="userform" th:action="@{/admin/user/save}" method="post" th:object="${user}" enctype="multipart/form-data">
+	                    <div class="mb-3">
+	                        <label for="name" class="form-label">User Name:</label>
+	                        <input type="text" class="form-control" id="name" th:field="*{userName}">
+	                        <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="text-danger"></div>
+	                    </div>
+	                    
+	                    <div class="mb-3">
+	                        <label for="email" class="form-label">Email:</label>
+	                        <input type="email" class="form-control" id="email" th:field="*{email}">
+	                        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+	                    </div>
+	                    
+	                    <div class="mb-3">
+	                        <label for="password" class="form-label">Password:</label>
+	                        <input type="password" class="form-control" id="password" th:field="*{password}">
+	                        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
+	                    </div>
+	                    
+	                    <div class="mb-3">
+	                        <label for="dob" class="form-label">Birth Date:</label>
+	                        <input type="date" class="form-control" id="dob" th:field="*{dateOfBirth}">
+	                        <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="text-danger"></div>
+	                    </div>
+	                    
+	                    <div class="mb-3">
+	                        <label>Gender:</label>
+	                        	<input type="radio" th:field="*{gender}" th:value="'Male'" id="male" />
+		        	            <label for="male">Male</label>
+	    	        	        <input type="radio" th:field="*{gender}" th:value="'Female'" id="female" />
+	        	        	    <label for="female">Female</label>
+	        	        	    <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="text-danger"></div>
+	                    </div>
+	                    
+	                    <div class="mb-3">
+	                        <label for="photo" class="form-label">Photo:</label>
+	                        <input type="file" class="form-control" id="photo" accept="image/png, image/jpg, image/jpeg" th:field="*{file}">
+	                        <div th:if="${#fields.hasErrors('file')}" th:errors="*{file}" class="text-danger"></div>
+	                    </div>
+	                    
+	                    <button type="submit" class="btn btn-primary">Add</button>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<footer>
+	    <div class="footer">
+	       	 <span>Copyright © 2024, Institute of Advanced Technologies | All Rights Reserved.</span>
+	    </div>
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

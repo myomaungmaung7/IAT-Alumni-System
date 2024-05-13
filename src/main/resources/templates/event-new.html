@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Add New Event</title>
+	     <link rel="stylesheet" 	type="text/css" media="all" href="../../css/style.css"th:href="@{/css/style.css}" />
+	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	    
+	    <style>
+	        body {
+	            background-image: url('/images/Background.jpg');
+	            background-size: cover;
+	            background-repeat: no-repeat;
+	            height: 100vh;
+	        }
+	        
+	        .border {
+	            background-color: rgba(255, 255, 255, 0.9);
+	        }
+	        
+	        .profile-pic-nav{
+				width: 40px;
+			    height: 40px;
+			    border-radius: 50%;
+			    margin-right: 10px;
+			    margin-left: 10px;
+			}
+	        
+	        .logo {
+		        width: 150px !important;
+    			height: auto !important;
+		    }
+		    
+		    .navbar-nav {
+			    display: flex;
+			    list-style: none;
+			    padding: 0;
+			}
+			
+			.nav-item {
+			    margin-right: 20px;
+			    position: relative;
+			}
+			
+			.nav-link {
+			    color: black;
+			    text-decoration: none;
+			    position: relative;
+			}
+			
+			.nav-link:hover {
+			    color: #F171AB;
+			}
+			
+			.nav-link::after {
+			    content: '';
+			    position: absolute;
+			    left: 0;
+			    bottom: -2px;
+			    width: 0;
+			    height: 2px;
+			    background-color: #F171AB;
+			    transition: width 0.3s ease;
+			}
+			
+			.nav-item:hover .nav-link::after {
+			    width: 100%;
+			}
+	    </style>
+	</head>
+	
+	<body>
+		<header class="border border-body-secondary p-2 shadow mb-3">
+	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		        <div class="container-fluid">
+		            <a class="navbar-brand" href="/homeAlumni">
+		                <img class="logo" src="/images/IATLogo.png" alt="IATLogo">
+		            </a>
+		            
+		            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/alumni/article/posting">Post Article</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/alumni/event/create">Create Event</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/articleHistory">Articles History</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/alumni/posted-events">Events History</a>
+		                </li>
+		            </ul>
+		                
+		            <form class="d-flex" th:action="@{/search}">
+		                <input class="form-control me-2" type="search" name="keyword" placeholder="Search" aria-label="Search">
+		                <button class="btn btn-outline-success" type="submit">Search</button>
+		            </form>
+		                
+		            <a th:href="@{/user/profile/{userId}(userId=${currentUser.userId})}" class="ms-3">
+						<img class="profile-pic-nav" th:src="@{${currentUser.photosImagePath}}" alt="Profile Picture">
+					</a>
+		        </div>
+		    </nav>
+	    </header>
+	
+		<div class="container">
+	    	<div class="row justify-content-center align-items-center p-5">
+	        	<div class="col-md-6">
+	            	<div class="border border-secondary rounded p-5">
+	                	<h1 class="mb-4">Create New Event</h1>
+	                	<form id="eventform" th:action="@{/alumni/event/post}" method="post" th:object="${event}" enctype="multipart/form-data">
+	                    	<div class="mb-3">
+	                        	<label for="title" class="form-label">Title:</label>
+	                        	<input type="text" class="form-control" id="title" th:field="*{title}">
+	                        	<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></div>
+	                    	</div>
+	                    	<div class="mb-3">
+	                        	<label for="description" class="form-label">Description:</label>
+	                        	<textarea class="form-control" id="description" th:field="*{description}" rows="4" cols="50"></textarea>
+	                        	<div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></div>
+	                    	</div>
+	                    	<div class="mb-3">
+	                        	<label for="photo" class="form-label">Photo:</label>
+	                        	<input type="file" class="form-control" id="photo" accept="image/png, image/jpg, image/jpeg" th:field="*{eventFile}">
+	                        	<div th:if="${#fields.hasErrors('eventFile')}" th:errors="*{eventFile}" class="text-danger"></div>
+	                    	</div>
+	                    	<div class="mb-3">
+	                        	<label for="location" class="form-label">Location:</label>
+	                        	<input type="text" class="form-control" id="location" th:field="*{location}">
+	                        	<div th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="text-danger"></div>
+	                    	</div>
+	                    	<div class="mb-3">
+	                        	<label for="dateTime" class="form-label">Date & Time:</label>
+	                        	<input type="datetime-local" class="form-control" id="dateTime" th:field="*{dateTime}">
+	                        	<div th:if="${#fields.hasErrors('dateTime')}" th:errors="*{dateTime}" class="text-danger"></div>
+	                    	</div>
+	                    	<button type="submit" class="btn btn-primary">Post</button>
+	                	</form>
+	            	</div>
+	        	</div>
+	    	</div>
+		</div>
+		
+		<footer>
+	    	<div class="footer">
+	       	 <span >Copyright © 2024, Institute of Advanced Technologies | All Rights Reserved.</span>
+	    	</div>
+		</footer>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Public User</title>
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    	
+    	<style>
+			#hover:hover {
+				color: #F171AB;
+			}
+			
+			 #profile {
+				 font-size: 3em;
+				 margin-left: 250px;
+				 
+			 }
+			 
+			 #logout {
+				 width: 100px;
+				 height: 40px;
+			 }
+			 
+			.iatAlumni {
+				margin-left: 150px;
+			}
+			 
+			 #margin {
+				margin-left: 58px;
+			 }
+			 
+			 #dateMargin {
+				margin-left: 250px;
+			 }
+			 
+			  #artDate {
+				 margin-left: 250px;
+			 }
+			 
+			 #content {
+				 width: 600px;
+			 }
+			 
+			 .draggable {
+				 border-radius: 50%;
+				 
+			 }
+			 
+			 .user {
+				 font-size: 2em;
+				 color: #DAA520;
+			 }
+			 
+			 .plus {
+				 font-size: 1.7em;
+			 }
+			 
+			 .iat {
+				 color: #F171AB;
+			 }
+			 
+			 .login {
+				 margin-left: 300px;
+			 }
+		</style>
+	</head>
+	<bod>
+		<header class="border border-body-secondary p-2 shadow mb-5">
+			<nav class="navbar navbar-expand-lg">
+				<img src="/images/IATLogo.png" alt="IATLogo" width="100px" height="50px" class="me-5 ms-5">
+				<ul class="navbar-nav">
+					<li class="nav-item ms-5 me-5">
+						<a class="nav-link" href="/request" id="hover">Request Alumni</a>
+					</li>
+				</ul>
+				<div class="iatAlumni me-5">
+					<p class="iat text-center fs-2">
+						Welcome IAT Alumni System
+					</p>
+				</div>
+				
+				<form class="login">
+					<button type="submit" class="ms-4 bg-body-secondary border border-secondary rounded-pill"
+					id="logout">
+						<a href="/login" class="text-decoration-none text-body-secondary">
+							Login
+						</a>
+					</button>
+				</form>
+			</nav>
+		</header>
+		<div class="float-start">
+			<p class="text-center ms-4">
+				<i class="user bi bi-people-fill"></i>  
+				<span th:text="${userCount}" class="fs-3"></span><i class="plus bi bi-plus"></i>
+				<br>
+				<span class="text-secondary">Number of Users</span>
+    		</p>
+    		<p class="text-center ms-3">
+				<i class="user bi bi-calendar2-event"></i>
+				<span th:text="${eventCount}" class="fs-3"></span><i class="plus bi bi-plus"></i>
+				<br>
+				<span class="text-secondary">Number of Events</span>
+			</p>
+			<p class="text-center ms-3">
+				<i class="user bi bi-postcard-fill"></i>
+				<span th:text="${articleCount}" class="fs-3"></span><i class="plus bi bi-plus"></i>
+				<br>
+				<span class="text-secondary">Number of Articles</span>
+			</p>
+		</div>
+		<div class="container">
+			<div class="d-flex justify-content-center align-items-center">
+			<div>
+				<table>
+					
+					<tr>
+						<td>
+							<div>
+							<div th:each="article : ${listArticle}" 
+							class="border border-body-secondary shadow p-3 mb-5 rounded-3" id="content">
+								<div>
+									<sapn>
+										<img th:src="@{${article.user.photosImagePath}}" width="40px" height="40px" 
+											class="draggable border border-secondary">
+									</sapn>
+									<span th:text="${article.user.userName}" class="ms-3"></span>
+									<span th:text="${article.date}" id="dateMargin"></span>
+								</div>
+								<div id="margin">
+									<p>
+										<span  th:text="${article.title}" ></span>
+									</p>
+								</div>
+								<div id="margin">
+									<p>
+										<span th:text="${article.description}"></span>
+										
+									</p>
+								</div>
+							</div>
+					 		</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div>
+								<div th:each="event : ${listEvent}" 
+								class="border border-body-secondary shadow mb-5 rounded-3" id="content">
+									<div class="mt-2 ms-2">
+										<span>
+											<img th:src="@{${event.user.photosImagePath}}" width="40px" height="40px" 
+											class="draggable border border-secondary">
+										</span>
+										<span th:text="${event.user.userName}" class="ms-2"></span>
+										<span th:text="${event.date}" id="artDate"></span>
+									</div>
+									<div id="margin">
+										<p>
+											<span th:text="${event.title}"></span>
+										</p>
+									</div>
+									<div id="margin">
+										<p>
+											<span th:text="${event.description}"></span>
+											<span><a></a></span>
+										</p>
+									</div>
+									<div id="margin">
+										<p>
+											<span th:text="${event.dateTime}"></span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			</div>
+		</div>
+	</body>
+</html>

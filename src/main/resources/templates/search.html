@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Search Result Display Page</title>
+    	 <link rel="stylesheet" 	type="text/css" media="all" href="../../css/style.css"th:href="@{/css/style.css}" />
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    	
+    	<style>
+			#hover:hover {
+				color: #F171AB;
+			}
+			
+			 #profile {
+				 font-size: 3em;
+				 margin-left: 250px;
+				 
+			 }
+			 
+			 #back {
+				 width: 100px;
+				 height: 40px;
+			 }
+			 
+			 #search {
+				 margin-left: 250px;
+			 }
+			 
+			 #margin {
+				margin-left: 58px;
+			 }
+			 
+			 #dateMargin {
+				margin-left: 250px;
+			 }
+			 
+			 #backMargin {
+				 margin-left: 250px;
+			 }
+			 
+			 #content {
+				 width: 600px;
+			 }
+			 
+			 .draggable {
+				 border-radius: 50%;
+				 width: 40px;
+				 height: 40px;
+			 }
+			 
+			 #searchBar {
+				 width: 350px;
+				 height: 40px;
+			 }
+			 
+			 #artDate {
+				 margin-left: 300px;
+			 }
+			 
+			 #artDes {
+				 margin-left: 58px;
+			 }
+			 
+			 .comment {
+				 border-top-right-radius: 0;
+				 border-top-left-radius: 0;
+			 }
+			 
+		</style>
+	</head>
+	<body>
+		<header class="border border-body-secondary p-2 shadow mb-5">
+			<nav class="navbar navbar-expand-lg">
+				<img src="/images/IATLogo.png" alt="IATLogo" width="100px" height="50px" class="me-5 ms-5">
+				
+				<form class="d-flex me-5" role="search" id="search" th:action="@{/search}">
+      				 <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" 
+      				 name="keyword" id="searchBar">
+         			 <button class="btn btn-outline-success ms-2" type="submit" value="Search">Search</button>
+    			</form>
+				
+				<form id="backMargin">
+					<button type="submit" class="ms-4 bg-body-secondary border border-secondary rounded-pill"
+					id="back">
+					<a href="/alumniHome" class="text-decoration-none text-body-secondary">
+					<i class="bi bi-arrow-left"></i>	Back  
+					</a>
+					</button>
+				</form>
+			</nav>
+		</header>
+		<div class="container">
+			<div class="d-flex justify-content-center align-items-center">
+			<div>
+				<table>
+					<tr>
+						<td>
+							<div class="container mt-5 mb-5">
+    							<div class="d-flex align-items-center mb-3" th:each="user : ${listUser}">
+     								 <img th:src="@{${user.photosImagePath}}" alt="User Profile Picture" class="rounded-circle me-3" style="width: 50px; height: 50px;">
+      								 <div class="text-left">
+        								<span th:text="${user.userName}"></span>
+        								<br>
+        								<span th:text="${user.email}"></span>
+        								<br>
+       									<a th:href="@{/profile/{id}(id=${user.userId})}" class="btn btn-primary">
+											   view all
+										</a>
+      								</div>
+    							</div>
+							</td>
+						</tr>
+					<tr>
+						<td>
+							<div>
+							<div th:each="article : ${listArticle}" 
+							class="border border-body-secondary shadow p-3 mb-5 rounded-3" id="content">
+								<div>
+									<span>
+										<img th:src="@{${article.user.photosImagePath}}" width="40px" height="40px" 
+											class="draggable border border-secondary">
+									</span>
+									<span th:text="${article.user.userName}" class="ms-3"></span>
+									<span th:text="${article.date}" id="dateMargin"></span>
+								</div>
+								<div id="margin">
+									<p>
+										<span  th:text="${article.title}" ></span>
+									</p>
+								</div>
+								<div id="margin">
+									<p>
+										<span th:text="${article.description}"></span>
+									</p>
+								</div>
+							</div>
+					 		</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div>
+								<div th:each="event : ${listEvent}" 
+								class="border border-body-secondary shadow mb-5 rounded-3" id="content">
+									<div class="mt-2 ms-2">
+										<span>
+											<img th:src="@{${event.user.photosImagePath}}" width="40px" height="40px" 
+											class="draggable border border-secondary">
+										</span>
+										<span th:text="${event.user.userName}" class="ms-2"></span>
+										<span th:text="${event.date}" id="artDate"></span>
+									</div>
+									<div id="artDes">
+										<p>
+											<span th:text="${event.title}"></span>
+										</p>
+									</div>
+									<div id="artDes">
+										<p>
+											<span th:text="${event.description}"></span>
+											<span><a></a></span>
+										</p>
+									</div>
+									<div id="artDes">
+										<p>
+											<span th:text="${event.dateTime}"></span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			</div>
+		</div>
+		 <div class="footer">
+			<p>copyright &copy; 2024,Institute of Advanced Technologies | All Rights Reserved.</p>
+		</div>
+	</body>
+</html>

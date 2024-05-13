@@ -1,0 +1,57 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="html_head" id="html_head">
+  <meta charset="ISO-8859-1">
+  <title>Course Management System - CMS</title>
+  <link rel="stylesheet" th:href="@{/css/simple.css}" />
+</head>
+
+<body>
+  <div th:fragment="menu" id="menu">
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+      <a th:href="@{/about}">Course Management System - CMS</a>
+      <a th:href="@{/home}">Home</a>
+      <a th:href="@{/about}">About</a>
+      <div th:if="${session.userSession?.user}">
+                    
+          <div th:if="${session.role == 'ADMIN'}">
+            <div class="subnav">
+              <button class="subnavbtn">Admin Menu <i class="fa fa-caret-down"></i></button>
+              <div class="subnav-content">
+                <a th:href="@{/admin/role/list}" th:utext="#{menu.admin.rlist}">Roles</a>
+                <a th:href="@{/admin/user/list}" th:utext="#{menu.admin.ulist}">Users</a>
+                <a th:href="@{/admin/faculty/list}" th:utext="#{menu.admin.flist}">Faculties</a>
+              </div>
+            </div>
+          </div>
+
+           <div th:if="${session.role == 'FACULTY'}">
+            <div class="subnav">
+              <button class="subnavbtn">Faculty Menu <i class="fa fa-caret-down"></i></button>
+              <div class="subnav-content">
+				
+				   <a th:href="@{/success}" th:utext="#{menu.success}">Login Success</a>
+				   <a th:href="@{/staff/profile}" th:utext="#{menu.profile}">Manage Profile</a>
+				   <a th:href="@{/staff/course/history}" th:utext="#{menu.personalHistory}">History</a>
+                <a th:href="@{/staff/course/create}" th:utext="#{menu.courseSubmit}">Apply</a>
+             </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <a th:href="@{/logout}" th:utext="#{menu.logout}">Logout</a>
+        
+      </div>
+      
+    </nav>
+  </div>
+  
+  <div th:fragment="header" id="header">
+    <div th:if="${not #strings.isEmpty(userSession)}">
+      <h2><em th:utext="'Hello ' + ${session.userSession.user.userName}"></em></h2>
+    </div>
+  </div>
+</body>

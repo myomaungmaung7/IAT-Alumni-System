@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" 	type="text/css" media="all" href="../../css/style.css"th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+	<style>
+		.comment {
+			    margin-bottom: 50px;
+			}
+			
+			.comment-username {
+			    margin-right: 30px;
+			    color: #0070E0;
+			    text-decoration: none;
+			    font-size: larger;
+			}
+			
+			.profile-pic-smaller {
+			    width: 32px;
+			    height: 32px;
+			    border-radius: 50%;
+			    margin-right: 10px;
+			}
+	</style>
+</head>
+<body  >
+	
+	<div class="navbar">
+				<div class="logo">
+					     
+					<img src="/images/IATLogo.png" alt="Logo" height="50px" width="200px">
+				</div>
+				<div class="Alink">
+								 
+								<a href="/alumni/article/posting" class="hover">Post Article</a>
+								<a href="/alumni/event/create" class="hover">Create Event</a>
+								<a href="/articleHistory" class="hover">Article History</a>
+								<a href="/alumni/event/postedEvents" class="hover">Event History</a>
+								
+								 
+				
+				
+							</div>
+	
+							<div class="search-bar">
+										 <form class="search" role="search" id="search" th:action="@{/search}">
+							      				 <input class="insearch" type="text" placeholder="Search" aria-label="Search" 
+							      			 name="keyword" id="searchBar">
+							         			 <button class="butsearch" type="submit" value="Search">Search</button>
+							    			</form>
+											 
+										</div>
+										<a th:href="@{'/user/profile/' + ${article.user.userId}}" class="ms-3">
+											<img class="profile-pic-nav" th:src="@{${currentUser.photosImagePath}}" alt="Profile Picture"  >
+										</a>
+
+			</div> 
+    
+	
+	
+	
+    <div class="DB">
+        <a th:href="@{/alumniHome}"><button>Back</button></a>
+    </div>
+	
+	<br /> 	<br /> 
+	<table class="commenttable" border="1" padding="10">
+		 			 
+		 			<tbody class="ctbody">
+		 				<tr th:each="article : ${listArticle}" class="ctr" 	th:if="${article.articleId == currentArticleId}"> 
+		 				<td class="ctd">
+							
+							<sapn>
+							<img th:src="@{${article.user.photosImagePath}}" width="40px" height="40px" style="border-radius: 50%;" >
+							</sapn>
+							
+							<span th:text="${article.user.userName}" /> &nbsp;&nbsp;&nbsp;
+							<span th:text="'published'" />						&nbsp;&nbsp;&nbsp;
+		 					<span th:text="${article.date}" /><br /> 
+							 
+<!--		 					 <a th:href="@{/user/profile/{id}(id=${currentUser.userId})}">-->
+<!--				    			<img th:src="@{${currentUser.photosImagePath}}" alt="Profile Photo" width="45px" height="45px"-->
+<!--				    				class="draggable border border-secondary  me-2 ms-3">-->
+<!--				    		</a>-->
+		 				</td>
+		 				</tr>
+		 			</tbody>
+		 		 </table>
+	
+	
+	<div th:action="@{/articleDetail/{article.articleId}(articleId=${article.articleId})}" method="post" th:object="${article}"> 
+    <div class="DI">
+		
+        <input type="text" 	th:field="*{title}" readonly="true" >
+		
+        <div class="btn">
+			<a th:href="@{/reportedArticle/{articleId}(articleId=${article.articleId})}">Report</a>&nbsp;
+			<i class="bi bi-exclamation-triangle-fill"></i>
+			</div>
+		
+    </div>
+	<br><br><br><br>
+	<div> 
+		<div class="daverage">
+		    <p th:text="'Average Rating: ' + ${average} +' /5.0'"></p><br>
+		</div>
+   
+	<a th:href="@{/alumni/rating/{articleId}(articleId=${article.articleId})}" class="ratinglink">give rating </a>
+	</div>
+	
+         <div>
+            <img th:src="@{${article.photosImagePath}}"   alt="" width="100%" height="100%">
+         </div>
+           
+           <br>
+		   <br>
+		 
+		 <div class="divp">
+			<p 	th:text="@{${article.description}}">
+				
+			</p>
+		 </div>
+          
+		 </div>
+
+		  
+
+		 <br><br><br><br>
+		 
+		 
+		 <div class="comments-section mt-3">
+					    <div th:each="comment : ${listComment}" class="comment">
+					        <a th:href="@{'/user/profile/' + ${comment.user.userId}}">
+					            <img th:src="@{${comment.user.getPhotosImagePath()}}" alt="Profile Picture" class="profile-pic-smaller">
+					        </a>
+					        
+					        <a th:href="@{'/user/profile/' + ${comment.user.userId}}" class="comment-username">
+						        <span th:text="${comment.user.userName}"></span>
+						    </a>
+					        
+					        <span class="comment-datetime" th:text="${#temporals.format(comment.dateTime, 'MMM dd, yyyy')}"></span>
+    						<span class="comment-datetime" th:text="${#temporals.format(comment.dateTime, 'hh:mm a')}" style="margin-left: 20px;"></span>
+					        
+					        <div class="comment-text" th:text="${comment.comment}"></div>
+					    </div>
+					</div>
+		 
+		 <form 	th:action="@{/alumni/savedcomment/{articleId}(articleId=${articleId})}" method="post">
+			<input type="hidden" name="articleId" th:value="${article.articleId}" />
+			<div class="commentdiv"> 
+			<textarea cols="154" rows="2" name="commentText" placeholder="Enter Your Comment" class="commenttextarea" required >
+				
+			</textarea>
+			</div>
+			
+			<div class="rb">
+				<button type="submit" class="ratingbutton">
+					send
+				</button>
+			</div>
+		 </form>
+
+<!--<form th:action="@{/alumni/commentsaved}" method="post" th:object="${comment}">-->
+	
+	
+<!--	<div class="commentdiv">-->
+<!--		<textarea 	cols="154" rows="2" placeholder="Enter Your Comment" class="commenttextarea" th:field="*{comment}" required>-->
+			
+<!--		</textarea>-->
+<!--	</div>-->
+	
+<!--	<div class="rb">-->
+<!--		<button type="submit" class="ratingbutton">-->
+<!--			send-->
+<!--		</button>-->
+<!--	</div>-->
+	
+<!--</form>-->
+
+
+
+		        <br><br><br><br>
+		 
+		        <div class="footer">
+		            <p>copyright &copy; 2024,Institute of Advanced Technologies | All Rights Reserved.</p>
+		        </div>
+
+
+
+         
+          
+</body>
+</html>
+
+ 

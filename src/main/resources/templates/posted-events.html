@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Events</title>
+     <link rel="stylesheet" 	type="text/css" media="all" href="../../css/style.css"th:href="@{/css/style.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+		.back-btn {
+	            background-color: #6c757d;
+	            border-color: #6c757d;
+	        }
+
+	        .back-btn:hover {
+	            background-color: #495057;
+	            border-color: #495057;
+	        }
+	        
+	        .custom-btn {
+			    background-color: #6c757d !important;
+			    border-color: #6c757d !important;
+			}
+
+			.custom-btn:hover {
+	            background-color: #495057 !important;
+	            border-color: #495057 !important;
+	        }
+		
+		.navbar-brand img {
+	            width: 50px;
+	            height: auto;
+	        }
+	        
+	        .profile-pic-nav{
+				width: 40px;
+			    height: 40px;
+			    border-radius: 50%;
+			    margin-right: 10px;
+			    margin-left: 10px;
+			}
+			
+			.logo {
+		        width: 150px !important;
+    			height: auto !important;
+		    }
+		    
+		    .navbar-nav {
+			    display: flex;
+			    list-style: none;
+			    padding: 0;
+			}
+			
+			.nav-item {
+			    margin-right: 20px;
+			    position: relative;
+			}
+			
+			.nav-link {
+			    color: black;
+			    text-decoration: none;
+			    position: relative;
+			}
+			
+			.nav-link:hover {
+			    color: #F171AB;
+			}
+			
+			.nav-link::after {
+			    content: '';
+			    position: absolute;
+			    left: 0;
+			    bottom: -2px;
+			    width: 0;
+			    height: 2px;
+			    background-color: #F171AB;
+			    transition: width 0.3s ease;
+			}
+			
+			.nav-item:hover .nav-link::after {
+			    width: 100%;
+			}
+	</style>
+</head>
+<body>
+	<header class="border border-body-secondary p-2 shadow mb-3">
+	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		        <div class="container-fluid">
+		            <a class="navbar-brand" href="/homeAlumni">
+		                <img class="logo" src="/images/IATLogo.png" alt="IATLogo">
+		            </a>
+		            
+		            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/alumni/article/posting">Post Article</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/alumni/event/create">Create Event</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/articleHistory">Articles History</a>
+		                </li>
+		                    
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/alumni/event/postedEvents">Events History</a>
+		                </li>
+		            </ul>
+		                
+		            <form class="d-flex" th:action="@{/search}">
+		                <input class="form-control me-2" type="search" name="keyword" placeholder="Search" aria-label="Search">
+		                <button class="btn btn-outline-success" type="submit">Search</button>
+		            </form> 
+		                
+		            <a th:href="@{'/user/profile/' + ${currentUser.userId}}" class="ms-3">
+						<img class="profile-pic-nav" th:src="@{${currentUser.photosImagePath}}" alt="Profile Picture">
+					</a>
+		        </div>
+		    </nav>
+	    </header>
+	    
+    <div class="container">
+		<button type="button" class="btn btn-primary mb-3 back-btn" onclick="window.history.back()">
+			<i class="bi bi-arrow-left"></i> Back
+		</button>
+	    <h1 class="text-center my-4">My Events</h1>
+	    <div th:if="${myEvents.empty}">
+	        <p class="text-center">No Events Posted</p>
+	    </div>
+	    
+	    <div th:each="event : ${myEvents}">
+	        <div class="row justify-content-center mb-4">
+	            <div class="col-md-6">
+	                <div class="card">
+	                    <img th:src="@{/event-photos/{eventId}/{photo}(eventId=${event.eventId}, photo=${event.photo})}" class="card-img-top" alt="Event Photo">
+	                    <div class="card-body ">
+							<h4 class="card-title" th:text="${event.title}"></h4>
+	                        <h5 class="card-title">
+			                    <span th:text="${#lists.size(event.participants)}"></span> 
+			                    <i class="bi bi-people-fill ms-1"></i>
+			                    <span>Joined</span>
+			                </h5>
+	                        <p class="card-text" th:text="${#strings.length(event.description) &gt; 200 ? #strings.substring(event.description, 0, 200) + '...' : event.description}"></p>
+	                    </div>
+	                    <div class="card-footer">
+	                        <a th:href="@{/alumni/event/eventDetail/{eventId}(eventId=${event.eventId})}" class="btn btn-primary custom-btn">View Details</a>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<footer>
+	    <div class="footer">
+	        <span>Copyright © 2024, Institute of Advanced Technologies | All Rights Reserved.</span>
+	    </div>
+	</footer>
+</body>
+</html>
